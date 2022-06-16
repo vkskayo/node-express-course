@@ -1,34 +1,23 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-app.use(bodyParser.json())
-const mockUserData = [{name: "Joana"}, {name: "Claudio"}];
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}))
 
-app.get("/users", function(req, res){
-    res.json({
-        sucess: true, message: "sucessfully got users", users: mockUserData});
+const mockUserData=[
+	{name:'Mark'},
+	{name:'Jill'}
+]
+
+app.get('/users',function(req,res){
+	res.json({
+		success: true,
+		message: 'successfully got users. Nice!',
+		users: mockUserData
+	})
 })
 
-app.post("/login", function(req, res){
-    const username = req.body.username;
-    const password = req.body.password;
-
-    const mockUsername = "chibana";
-    const mockPassword = "1234";
-
-    if(username === mockUsername && password === mockPassword){
-        res.json({
-            success: true, message: "username and password match!", token : "encrypted token goes here"
-        })
-    } else{
-        res.json({
-            sucess : false, message : "password and username do not match"
-        })
-    }
-
-
-})
 app.get('/users/:id',function(req,res){
 	console.log(req.params.id)
 	res.json({
@@ -38,6 +27,36 @@ app.get('/users/:id',function(req,res){
 	})
 })
 
-app.listen(8000, function(){
-    console.log("server is running");
+app.post('/login',function(req,res){
+	
+	const username=req.body.username;
+	const password=req.body.password;
+
+	
+	const mockUsername="billyTheKid";
+	const mockPassword="superSecret";
+    console.log(username);
+
+    if ((username===mockUsername) && (password===mockPassword)){
+		
+		res.json({
+			success: true,
+			message: 'password and username match!',
+			token: 'encrypted token goes here'
+		})
+	} else {
+		res.json({
+			success: false,
+			message: 'password and username do not match'
+		})
+	}
+	res.json({"name": mockUsername})
+
 })
+
+app.post("/test", function(req, res){
+    var a = req.body;
+    res.send("ola");
+})
+
+app.listen(8000,function(){console.log('server is listening')})
